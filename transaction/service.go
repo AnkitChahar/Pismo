@@ -37,6 +37,10 @@ func (s *Service) CreateTransaction(transaction *models.Transaction) (*models.Tr
 		return nil, fmt.Errorf("error while getting account: %w", errAccount)
 	}
 
+	if transaction.OperationTypeID != models.CreditVoucher {
+		transaction.Amount = -transaction.Amount
+	}
+
 	transaction.EventDate = time.Now()
 	res := s.db.Create(transaction)
 	if res.Error != nil {
