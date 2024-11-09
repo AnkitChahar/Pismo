@@ -3,8 +3,7 @@ package database
 import (
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
-	"pismo/account"
-	"pismo/transaction"
+	"pismo/models"
 )
 
 func ConnectDatabase(dsn string) (*gorm.DB, error) {
@@ -14,7 +13,7 @@ func ConnectDatabase(dsn string) (*gorm.DB, error) {
 	}
 
 	// Migrate the schema
-	if err = DB.AutoMigrate(&account.Account{}, &transaction.Transaction{}); err != nil {
+	if err = DB.AutoMigrate(&models.Account{}, &models.Transaction{}); err != nil {
 		return nil, err
 	}
 

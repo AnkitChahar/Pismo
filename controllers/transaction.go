@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"net/http"
 
+	"pismo/models"
 	"pismo/transaction"
 )
 
@@ -19,9 +20,9 @@ func NewTransactionController(transactionSvc transaction.TransactionService) *Tr
 
 func (c *TransactionController) CreateTransaction(w http.ResponseWriter, r *http.Request) {
 	var input struct {
-		AccountID       uint                      `json:"account_id"`
-		OperationTypeID transaction.OperationType `json:"operation_type_id"`
-		Amount          float64                   `json:"amount"`
+		AccountID       uint                 `json:"account_id"`
+		OperationTypeID models.OperationType `json:"operation_type_id"`
+		Amount          float64              `json:"amount"`
 	}
 
 	if err := json.NewDecoder(r.Body).Decode(&input); err != nil {
@@ -29,7 +30,7 @@ func (c *TransactionController) CreateTransaction(w http.ResponseWriter, r *http
 		return
 	}
 
-	txn, err := c.transactionSvc.CreateTransaction(&transaction.Transaction{
+	txn, err := c.transactionSvc.CreateTransaction(&models.Transaction{
 		AccountID:       input.AccountID,
 		OperationTypeID: input.OperationTypeID,
 		Amount:          input.Amount,

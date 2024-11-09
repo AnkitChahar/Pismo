@@ -7,6 +7,7 @@ import (
 
 	"github.com/gorilla/mux"
 	"pismo/account"
+	"pismo/models"
 )
 
 type AccountController struct {
@@ -20,7 +21,7 @@ func NewAccountController(accountSvc account.AccountService) *AccountController 
 }
 
 func (c *AccountController) CreateAccount(w http.ResponseWriter, r *http.Request) {
-	var account account.Account
+	var account models.Account
 	if err := json.NewDecoder(r.Body).Decode(&account); err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return

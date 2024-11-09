@@ -6,10 +6,11 @@ import (
 
 	"gorm.io/gorm"
 	"pismo/account"
+	"pismo/models"
 )
 
 type TransactionService interface {
-	CreateTransaction(transaction *Transaction) (*Transaction, error)
+	CreateTransaction(transaction *models.Transaction) (*models.Transaction, error)
 }
 
 type Service struct {
@@ -26,7 +27,7 @@ func NewService(db *gorm.DB, accountSvc account.AccountService) *Service {
 
 var _ TransactionService = (*Service)(nil)
 
-func (s *Service) CreateTransaction(transaction *Transaction) (*Transaction, error) {
+func (s *Service) CreateTransaction(transaction *models.Transaction) (*models.Transaction, error) {
 	accountId := transaction.AccountID
 
 	// Validate if account exists with the given accountId
@@ -41,5 +42,5 @@ func (s *Service) CreateTransaction(transaction *Transaction) (*Transaction, err
 		return nil, res.Error
 	}
 
-	return res.Statement.Model.(*Transaction), nil
+	return res.Statement.Model.(*models.Transaction), nil
 }
