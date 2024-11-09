@@ -1,4 +1,4 @@
-package models
+package transaction
 
 type OperationType int
 

@@ -7,19 +7,28 @@ import (
 	"strconv"
 
 	"github.com/gorilla/mux"
+	"pismo/account"
 	"pismo/database"
-	"pismo/models"
-	"pismo/services"
 )
 
-func CreateAccount(w http.ResponseWriter, r *http.Request) {
-	var account models.Account
+type AccountController struct {
+	accountSvc account.AccountService
+}
+
+func NewAccountController(accountSvc account.AccountService) *AccountController {
+	return &AccountController{
+		accountSvc: accountSvc,
+	}
+}
+
+func (c *AccountController) CreateAccount(w http.ResponseWriter, r *http.Request) {
+	var account account.Account
 	if err := json.NewDecoder(r.Body).Decode(&account); err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
 
-	if err := services.CreateAccount(&account); err != nil {
+	if err := c.accountSvc.CreateAccount(&account); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
@@ -32,7 +41,7 @@ func CreateAccount(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func GetAccount(w http.ResponseWriter, r *http.Request) {
+func (c *AccountController) GetAccount(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	idStr := vars["accountId"]
 	id, err := strconv.Atoi(idStr)
@@ -41,7 +50,7 @@ func GetAccount(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	account, err := services.GetAccountByID(uint(id))
+	account, err := c.accountSvc.GetAccountByID(uint(id))
 	if err != nil {
 		if errors.Is(err, database.RNFError) {
 			http.Error(w, "Account not found", http.StatusNotFound)

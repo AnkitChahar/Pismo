@@ -4,16 +4,28 @@ import (
 	"log"
 	"net/http"
 
+	"pismo/account"
+	"pismo/controllers"
 	"pismo/database"
 	"pismo/routes"
+	"pismo/transaction"
 )
 
 func main() {
 	// Initialize the database
-	database.ConnectDatabase()
+	db, errDB := database.ConnectDatabase()
+	if errDB != nil {
+		log.Fatal(errDB)
+	}
+
+	accountSvc := account.NewAccountService(db)
+	txnSvc := transaction.NewService(db, accountSvc)
+
+	txnController := controllers.NewTransactionController(txnSvc)
+	accountController := controllers.NewAccountController(accountSvc)
 
 	// Set up the router
-	router := routes.SetupRouter()
+	router := routes.SetupRouter(txnController, accountController)
 
 	// Start the server
 	log.Println("Server running on port 8080")

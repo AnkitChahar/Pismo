@@ -1,4 +1,4 @@
-package models
+package account
 
 type Account struct {
 	ID             uint   `json:"account_id" gorm:"primaryKey"`

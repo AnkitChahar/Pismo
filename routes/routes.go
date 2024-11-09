@@ -5,15 +5,15 @@ import (
 	"pismo/controllers"
 )
 
-func SetupRouter() *mux.Router {
+func SetupRouter(txnController *controllers.TransactionController, accountController *controllers.AccountController) *mux.Router {
 	router := mux.NewRouter().StrictSlash(true)
 
 	// Account routes
-	router.HandleFunc("/accounts", controllers.CreateAccount).Methods("POST")
-	router.HandleFunc("/accounts/{accountId}", controllers.GetAccount).Methods("GET")
+	router.HandleFunc("/accounts", accountController.CreateAccount).Methods("POST")
+	router.HandleFunc("/accounts/{accountId}", accountController.GetAccount).Methods("GET")
 
 	// Transaction routes
-	router.HandleFunc("/transactions", controllers.CreateTransaction).Methods("POST")
+	router.HandleFunc("/transactions", txnController.CreateTransaction).Methods("POST")
 
 	return router
 }
