@@ -7,6 +7,7 @@ import (
 	"pismo/models"
 )
 
+//go:generate mockgen -source=service.go -destination=./mocks/service_mocks.go -package=mocks
 type AccountService interface {
 	CreateAccount(account *models.Account) (*models.Account, error)
 	GetAccountByID(id uint) (*models.Account, error)

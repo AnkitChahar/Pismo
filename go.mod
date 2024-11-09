@@ -3,6 +3,7 @@ module pismo
 go 1.22.5
 
 require (
+	github.com/golang/mock v1.6.0
 	github.com/gorilla/mux v1.8.1
 	gorm.io/driver/sqlite v1.5.6
 	gorm.io/gorm v1.25.12
