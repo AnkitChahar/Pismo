@@ -13,7 +13,7 @@ import (
 
 func main() {
 	// Initialize the database
-	db, errDB := database.ConnectDatabase()
+	db, errDB := database.ConnectDatabase("main.db")
 	if errDB != nil {
 		log.Fatal(errDB)
 	}

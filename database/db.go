@@ -7,8 +7,8 @@ import (
 	"pismo/transaction"
 )
 
-func ConnectDatabase() (*gorm.DB, error) {
-	DB, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{})
+func ConnectDatabase(dsn string) (*gorm.DB, error) {
+	DB, err := gorm.Open(sqlite.Open(dsn), &gorm.Config{})
 	if err != nil {
 		return nil, err
 	}
