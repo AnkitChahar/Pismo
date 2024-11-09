@@ -12,11 +12,11 @@ test:
 	@echo "Running tests..."
 	go test -v ./...
 
-build-docker:
+docker-build:
 	@echo "Building the Docker image..."
 	docker build -t $(APP_NAME) .
 
-run-docker:
+docker-run:
 	@echo "Running the Docker container..."
 	docker run -p 8080:8080 $(APP_NAME)
 
