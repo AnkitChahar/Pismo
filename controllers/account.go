@@ -2,13 +2,11 @@ package controllers
 
 import (
 	"encoding/json"
-	"errors"
 	"net/http"
 	"strconv"
 
 	"github.com/gorilla/mux"
 	"pismo/account"
-	"pismo/database"
 )
 
 type AccountController struct {
@@ -28,14 +26,14 @@ func (c *AccountController) CreateAccount(w http.ResponseWriter, r *http.Request
 		return
 	}
 
-	if err := c.accountSvc.CreateAccount(&account); err != nil {
+	ac, err := c.accountSvc.CreateAccount(&account)
+	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
 	w.WriteHeader(http.StatusCreated)
-	err := json.NewEncoder(w).Encode(account)
-	if err != nil {
+	if err = json.NewEncoder(w).Encode(ac); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
@@ -50,17 +48,13 @@ func (c *AccountController) GetAccount(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	account, err := c.accountSvc.GetAccountByID(uint(id))
+	ac, err := c.accountSvc.GetAccountByID(uint(id))
 	if err != nil {
-		if errors.Is(err, database.RNFError) {
-			http.Error(w, "Account not found", http.StatusNotFound)
-			return
-		}
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
-	err = json.NewEncoder(w).Encode(account)
+	err = json.NewEncoder(w).Encode(ac)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return

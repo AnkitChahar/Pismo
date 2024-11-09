@@ -1,6 +1,7 @@
 package transaction
 
 import (
+	"fmt"
 	"time"
 
 	"gorm.io/gorm"
@@ -30,7 +31,7 @@ func (s *Service) CreateTransaction(transaction *Transaction) (*Transaction, err
 
 	_, errAccount := s.accountSvc.GetAccountByID(accountId)
 	if errAccount != nil {
-		return nil, errAccount
+		return nil, fmt.Errorf("error while getting account: %w", errAccount)
 	}
 
 	transaction.EventDate = time.Now()
