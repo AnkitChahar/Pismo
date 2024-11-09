@@ -1,16 +1,10 @@
 package database
 
 import (
-	"errors"
-
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 	"pismo/account"
 	"pismo/transaction"
-)
-
-var (
-	RNFError = errors.New("record not found")
 )
 
 func ConnectDatabase() (*gorm.DB, error) {
