@@ -5,7 +5,7 @@ WORKDIR /app
 COPY . .
 
 RUN go mod download
-RUN go build -o output/pismo .
+RUN go build  -o output/pismo .
 
 EXPOSE 8080
 
