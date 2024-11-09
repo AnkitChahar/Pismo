@@ -2,7 +2,6 @@ package transaction
 
 import (
 	"log"
-	"os"
 	"testing"
 
 	"github.com/golang/mock/gomock"
@@ -16,24 +15,12 @@ var (
 )
 
 func TestMain(m *testing.M) {
-	testDBDSN := "test.db"
-
-	// Remove DB file if it already exists to create a fresh test
-	if _, err := os.Stat(testDBDSN); err == nil {
-		err = os.Remove(testDBDSN)
-		if err != nil {
-			log.Fatal(err)
-		}
-	}
-
-	db, err := database.ConnectDatabase(testDBDSN)
+	db, err := database.ConnectTestDatabase()
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	testDB = db
-
-	defer os.Remove(testDBDSN)
 
 	m.Run()
 }

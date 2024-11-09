@@ -27,6 +27,7 @@ func NewService(db *gorm.DB, accountSvc account.AccountService) *Service {
 
 var _ TransactionService = (*Service)(nil)
 
+// CreateTransaction creates a new transaction for a account ID, it validates if the account is present, then creates the transaction
 func (s *Service) CreateTransaction(transaction *models.Transaction) (*models.Transaction, error) {
 	accountId := transaction.AccountID
 
